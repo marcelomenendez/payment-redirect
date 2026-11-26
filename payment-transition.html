@@ -140,10 +140,11 @@
             const copyBtn = document.getElementById("copy-btn");
             copyBtn.addEventListener("click", async () => {
                 try {
-                    await navigator.clipboard.writeText(requestId);
+                    const command = `dotnet run paytef-payment-confirm.cs ${requestId}`;
+                    await navigator.clipboard.writeText(command);
                     const notification = document.createElement("div");
                     notification.className = "copy-notification";
-                    notification.textContent = "requestID copiado";
+                    notification.textContent = "Comando copiado";
                     copyBtn.appendChild(notification);
                     setTimeout(() => {
                         notification.remove();
