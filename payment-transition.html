@@ -112,32 +112,32 @@
     <main class="loading" role="status">
         <div class="spinner" id="spinner" aria-hidden="true"></div>
         <div id="request-info" class="message">
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
-                <div>Esperando confirmación</div>
-                <div style="display: flex; align-items: flex-start; gap: 0.3rem; padding-top: 0.1rem;">
-                    <span>requestID: <span id="text-content"></span></span>
-                    <button id="copy-btn" class="copy-btn" title="Copiar al portapapeles" style="display:none; margin-top: -0.075rem; color: #000; opacity: 1;">
-                        <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <rect x="2" y="6" width="12" height="12" rx="1" ry="1"></rect>
-                            <rect x="6" y="3" width="12" height="12" rx="1" ry="1"></rect>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+            <div id="content-container"></div>
         </div>
     </main>
     <script>
         const requestId = new URLSearchParams(window.location.search).get("requestID");
         const info = document.getElementById("request-info");
-        const textContent = document.getElementById("text-content");
-        const requestText = document.getElementById("request-text");
-        const copyBtn = document.getElementById("copy-btn");
+        const contentContainer = document.getElementById("content-container");
 
         if (requestId) {
             info.classList.add("ok");
-            textContent.textContent = requestId;
-            copyBtn.style.display = "inline-flex";
+            contentContainer.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
+                    <div>Esperando confirmación</div>
+                    <div style="display: flex; align-items: flex-start; gap: 0.3rem; padding-top: 0.1rem;">
+                        <span>requestID: <span>${requestId}</span></span>
+                        <button id="copy-btn" class="copy-btn" title="Copiar al portapapeles" style="margin-top: -0.075rem; color: #000; opacity: 1;">
+                            <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <rect x="2" y="6" width="12" height="12" rx="1" ry="1"></rect>
+                                <rect x="6" y="3" width="12" height="12" rx="1" ry="1"></rect>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `;
             
+            const copyBtn = document.getElementById("copy-btn");
             copyBtn.addEventListener("click", async () => {
                 try {
                     await navigator.clipboard.writeText(requestId);
@@ -155,7 +155,7 @@
         } else {
             info.classList.add("error");
             document.getElementById("spinner").hidden = true;
-            requestText.textContent = "No se ha recibido el parámetro requestID";
+            contentContainer.textContent = "No se ha recibido el parámetro requestID";
         }
     </script>
 </body>
